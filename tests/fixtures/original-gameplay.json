@@ -1,0 +1,21 @@
+{
+  "commit": "ce7ad0f99d777dc88c4205d2159517d6588c818c",
+  "baseline": [
+    {
+      "character": "mage",
+      "kills": 91,
+      "score": 995,
+      "level": 3,
+      "elapsed": 119.99999999999532,
+      "hash": "47d847cd6f1fcdd0635a1b0531dce0538e69d087ccbb88901478e5ff50d2d6ca"
+    },
+    {
+      "character": "warrior",
+      "kills": 32,
+      "score": 355,
+      "level": 3,
+      "elapsed": 119.99999999999532,
+      "hash": "b4ccdb6da1939c6f29592d7ed65d801caca46875bfdc0949c03f33456a2deffa"
+    }
+  ]
+}

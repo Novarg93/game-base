@@ -6,16 +6,16 @@ import { applyFrostControl } from '../systems/FrostControl';
 import { denseGroup, groundTargets } from './targeting';
 
 export function frostNova(w: World) {
-  const rank = w.abilities.frost.level;
+  const rank = w.abilities.frost.level, config = w.skill('frost');
   if (w.status !== 'playing' || rank < 1) return false;
-  const stats = frostNovaStats(rank, w.stats.area), group = denseGroup(w, groundTargets(w, C.range), stats.radius);
+  const stats = frostNovaStats(rank, w.stats.area * config.areaMultiplier * config.area / C.radius), group = denseGroup(w, groundTargets(w, w.skill('frost').range), stats.radius);
   if (!group) return false;
   const targets = w.combatTargets.filter(e => distance(group.center, e) <= stats.radius + e.radius);
   let duration: number = stats.root;
   for (const e of targets) duration = Math.max(duration, applyFrostControl(e, w.elapsed, stats.root, evolved(w, 'frost')));
   w.effect('frost', group.center, stats.radius, 0xd9f3f7, duration);
   const capstone = rank >= 5 && (w.upgrades.area ?? 0) >= 3 ? C.capstoneDamage : 1;
-  for (const e of targets) w.damageEnemy(e, stats.damage * w.stats.damage * capstone, 'frost');
+  for (const e of targets) w.damageEnemy(e, (config.damage + rank * config.damagePerLevel) * w.stats.damage * capstone, 'frost');
   w.feedback({ type: 'ability', ability: 'frost', target: { ...group.center } });
   return true;
 }

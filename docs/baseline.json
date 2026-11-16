@@ -1,0 +1,94 @@
+{
+  "baseline": {
+    "hp": 100,
+    "maxHp": 100,
+    "speed": 135,
+    "level": 1,
+    "abilities": [
+      {
+        "id": "fireball",
+        "name": "Огненный шар",
+        "icon": "✦",
+        "level": 1,
+        "readyIn": 0
+      },
+      {
+        "id": "frost",
+        "name": "Морозная нова",
+        "icon": "❄",
+        "level": 0,
+        "readyIn": 0
+      },
+      {
+        "id": "lightning",
+        "name": "Цепная молния",
+        "icon": "ϟ",
+        "level": 0,
+        "readyIn": 0
+      },
+      {
+        "id": "meteor",
+        "name": "Армагеддон",
+        "icon": "☄",
+        "level": 0,
+        "readyIn": 0
+      },
+      {
+        "id": "shield",
+        "name": "Тайный щит",
+        "icon": "◇",
+        "level": 0,
+        "readyIn": 0
+      }
+    ],
+    "character": "mage",
+    "x": 159.51690000000005,
+    "caps": {
+      "orbs": 0,
+      "projectiles": 0,
+      "effects": 0
+    },
+    "metrics": {
+      "fps": 50.4375,
+      "updateMs": 0.4000000059604645,
+      "enemies": 1,
+      "projectiles": 0,
+      "orbs": 0,
+      "effects": 0,
+      "bosses": 0,
+      "chunks": 48,
+      "sprites": 1,
+      "pooledSprites": 0,
+      "guardians": 0,
+      "artifacts": {
+        "items": 0,
+        "allocated": 0
+      },
+      "radar": {
+        "updates": 8,
+        "markers": 1,
+        "listeners": 1
+      },
+      "loot": {
+        "items": 0,
+        "chests": 0,
+        "buffs": 0,
+        "trail": 0,
+        "allocatedItems": 0,
+        "allocatedChests": 0
+      },
+      "allocations": {
+        "orbs": 0,
+        "projectiles": 0,
+        "effects": 0
+      }
+    },
+    "listeners": {
+      "commands": 1,
+      "snapshots": 1,
+      "metrics": 1
+    },
+    "artBytes": 263392512
+  },
+  "errors": []
+}

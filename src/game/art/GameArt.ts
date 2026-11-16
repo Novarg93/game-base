@@ -1,114 +1,85 @@
-import {WarriorMovingCleaveArt} from './WarriorMovingCleaveArt';
-import {preloadWarriorUltimates} from './warriorUltimatesPack';
-import {WAR_BANNER_TEXTURE,WAR_BANNER_URL} from './WarBannerArt';
-import {RUNE_ACCEPTED_TEXTURE,RUNE_ACCEPTED_URLS,acceptedRuneCast,acceptedRuneFlight,RUNE_FLIGHT_ANGLE} from './runeWardenAccepted';
-import {preloadFrostUltimate} from './frostUltimatePack';
-import {WarriorHeroAnimation} from './WarriorHeroAnimation';
-import {WARRIOR_HERO,warriorHeroTexture,warriorHeroUrls} from './warriorHeroPack';
-import {WARRIOR_SKILLS,warriorSkillsTexture,warriorSkillsUrls} from './warriorSkillsPack';
-import {WarriorSkillArt} from './WarriorSkillArt';
-import {WARRIOR_CAST} from '../config/warriorAbilities';
-import {preloadFireUltimate} from './fireUltimatePack';
-import {WARDEN_AI_PAGES} from './ashWardenPixellabPack';
-import {LIGHTNING_ULTIMATE_TEXTURE,LIGHTNING_ULTIMATE_URLS} from './lightningUltimatePack';
-import {RegularLightningArt} from './RegularLightningArt';
-import {REGULAR_LIGHTNING_TEXTURE,REGULAR_LIGHTNING_URLS} from './regularLightningPack';
-import {AstralRevenantArt} from './AstralRevenantArt';
-import {FireballArt} from './FireballArt';
-import {FIREBALL_TEXTURE,FIREBALL_URLS,fireballFlightFrame} from './fireballPack';
-import {ASTRAL_REVENANT_TEXTURE,ASTRAL_REVENANT_URLS,astralProjectileFrame} from './astralRevenantPack';
-import {ASTRAL_PROJECTILE_TEXTURE,ASTRAL_PROJECTILE_URLS,astralAiFrame} from './astralProjectilePixellabPack';
-import {ASTRAL_FLAME_TEXTURE,ASTRAL_FLAME_URLS} from './astralFlamePixellabPack';
-import {MAGE_METEOR_TEXTURE,MAGE_METEOR_URLS} from './mageMeteorPack';
-import {MageAbilityArt} from './MageAbilityArt';
+import { WarriorMovingCleaveArt } from './WarriorMovingCleaveArt';
+import { WAR_BANNER_TEXTURE } from './WarBannerArt';
+import { RUNE_ACCEPTED_TEXTURE, acceptedRuneCast, acceptedRuneFlight, RUNE_FLIGHT_ANGLE } from './runeWardenAccepted';
+import { WarriorHeroAnimation } from './WarriorHeroAnimation';
+import { WARRIOR_HERO, warriorHeroTexture } from './warriorHeroPack';
+import { WARRIOR_SKILLS, warriorSkillsTexture } from './warriorSkillsPack';
+import { WarriorSkillArt } from './WarriorSkillArt';
+import { WARRIOR_CAST } from '../config/warriorAbilities';
+import { WARDEN_AI_PAGES } from './ashWardenPixellabPack';
+import { LIGHTNING_ULTIMATE_TEXTURE } from './lightningUltimatePack';
+import { RegularLightningArt } from './RegularLightningArt';
+import { REGULAR_LIGHTNING_TEXTURE } from './regularLightningPack';
+import { AstralRevenantArt } from './AstralRevenantArt';
+import { FireballArt } from './FireballArt';
+import { FIREBALL_TEXTURE, fireballFlightFrame } from './fireballPack';
+import { ASTRAL_REVENANT_TEXTURE, astralProjectileFrame } from './astralRevenantPack';
+import { ASTRAL_PROJECTILE_TEXTURE, astralAiFrame } from './astralProjectilePixellabPack';
+import { ASTRAL_FLAME_TEXTURE } from './astralFlamePixellabPack';
+import { MAGE_METEOR_TEXTURE } from './mageMeteorPack';
+import { MageAbilityArt } from './MageAbilityArt';
 import { RuneWardenArt } from './RuneWardenArt';
 import { RUNE_FLASH_TEXTURE } from './RuneJudgementFlash';
-import { RUNE_WARDEN_TEXTURE, RUNE_WARDEN_URLS } from './runeWardenPack';
-import {RUNE_VFX_TEXTURE,RUNE_VFX_URLS} from './runeWardenVfxPack';
-import { BRIAR_BEAST_TEXTURE, BRIAR_BEAST_URLS } from './briarBeastPack';
-import {MAGE_ABILITY_TEXTURE,MAGE_ABILITY_URLS} from './mageAbilityPack';
-import {MAGE_SHIELD_NOVA_TEXTURE,MAGE_SHIELD_NOVA_URLS} from './mageShieldNovaPack';
-import { WARDEN,wardenTexture } from './ashWardenPack';
-import {FLAME_STRIKE_TEXTURE,FLAME_STRIKE_URLS} from './flameStrikePack';
-import {MELEE_COMBO_TEXTURE,MELEE_COMBO_URLS} from './meleeComboPack';
+import { RUNE_WARDEN_TEXTURE } from './runeWardenPack';
+import { RUNE_VFX_TEXTURE } from './runeWardenVfxPack';
+import { BRIAR_BEAST_TEXTURE } from './briarBeastPack';
+import { MAGE_ABILITY_TEXTURE } from './mageAbilityPack';
+import { MAGE_SHIELD_NOVA_TEXTURE } from './mageShieldNovaPack';
+import { WARDEN, wardenTexture } from './ashWardenPack';
 import { FinalBossArt } from './FinalBossArt';
 import { UltimateArt } from './UltimateArt';
 import { ultimateFrozen } from '../systems/UltimateFreeze';
 import { PlayerHealthBar } from './PlayerHealthBar';
-import Phaser from 'phaser';
 import type { World } from '../systems/World';
+import { ASSET_REGISTRY, LOOT_ART, ARTIFACT_ART, enemyVisual, bossVisual, selectAsset, visualDimensions } from './assetRegistry';
+import { HD_CORE_TEXTURE } from './hdCoreLayout';
+import { RUNNER_TEXTURE, RUNNER_CLIPS, runnerFrame } from './runnerPack';
+import { RunnerAnimation } from './RunnerAnimation';
+import { MAGE_HERO, mageHeroTexture } from './mageHeroPack';
+import { MageCastingController } from './MageCastingController';
+import { MageHeroArt } from './MageHeroArt';
+import { MAGE_IDLE_TEXTURE } from './mageIdlePack';
+import { MAGE_RUN_V2_TEXTURE } from './mageRunPackV2';
+import { MAGE_CAST_V2_TEXTURE } from './mageCastPackV2';
+import { MAGE_MOVING_CAST_V2_TEXTURE } from './mageMovingCastV2';
+import { MageSpellOrigins } from './MageSpellOrigins';
+import { MageBlinkArt } from './MageBlinkArt';
+import { MAGE_BLINK_TEXTURE } from './mageBlinkPack';
+import { ENEMY_TEXTURE, isHdEnemy, packedEnemyFrame } from './enemyPack';
+import { EnemyAnimation } from './EnemyAnimation';
+import { GUARDIAN_TEXTURE } from './guardianPack';
+import { GuardianAnimation } from './GuardianAnimation';
+import { EliteAdornment } from './EliteAdornment';
+import { BOSS_TEXTURE, isHdBoss } from './bossPack';
+import { EncounterFeedback } from './EncounterFeedback';
+import { BossAnimation } from './BossAnimation';
+import { LOOT_TEXTURE, ARTIFACT_KEYS, lootFrame } from './lootPack';
+import { PickupAnimation } from './PickupAnimation';
+import { abilityVisual } from './abilityVisual';
+import { nativeAssetFiles } from './themes/default/nativeCatalog';
+import type { Facing, VisualSelection } from './assetRegistry';
+import { customAsset, customVisual, CustomEffects } from './themes/customAssets';
+import type { VisualTheme } from './themes/types';
+import { defaultTheme } from './themes/default';
+
+import Phaser from 'phaser';
+
 import type { Enemy, Projectile, XpOrb } from '../entities/types';
 import type { LootItem, Chest } from '../loot/types';
 import type { ArtifactDrop } from '../loot/ArtifactSystem';
-import { ASSET_REGISTRY, LOOT_ART, ARTIFACT_ART, enemyVisual, bossVisual, selectAsset, visualDimensions, type Facing, type VisualSelection } from './assetRegistry';
-import { HD_CORE_TEXTURE, HD_CORE_URLS } from './hdCoreLayout';
-import { RUNNER_TEXTURE, RUNNER_URLS, RUNNER_CLIPS, runnerFrame } from './runnerPack';
-import { RunnerAnimation } from './RunnerAnimation';
-import {MAGE_HERO,mageHeroTexture,mageHeroUrls} from './mageHeroPack';
-import { MageCastingController } from './MageCastingController';
-import {MageHeroArt} from './MageHeroArt';
-import {MAGE_IDLE_TEXTURE,MAGE_IDLE_URLS} from './mageIdlePack';
-import {MAGE_RUN_V2_TEXTURE,MAGE_RUN_V2_URLS} from './mageRunPackV2';
-import {MAGE_CAST_V2_TEXTURE,MAGE_CAST_V2_URLS} from './mageCastPackV2';
-import {MAGE_MOVING_CAST_V2_TEXTURE,MAGE_MOVING_CAST_V2_URLS} from './mageMovingCastV2';
-import {MAGE_PHANTOM_TEXTURE,MAGE_PHANTOM_URLS} from './magePhantomPack';
-import {MageSpellOrigins} from './MageSpellOrigins';
-import {MageBlinkArt} from './MageBlinkArt';
-import {MAGE_BLINK_TEXTURE,MAGE_BLINK_URLS} from './mageBlinkPack';
-import { ENEMY_TEXTURE, ENEMY_URLS, isHdEnemy, packedEnemyFrame } from './enemyPack';
-import { EnemyAnimation } from './EnemyAnimation';
-import { GUARDIAN_TEXTURE, GUARDIAN_URLS } from './guardianPack';
-import { GuardianAnimation } from './GuardianAnimation';
-import { EliteAdornment } from './EliteAdornment';
-import { BOSS_TEXTURE, BOSS_URLS, isHdBoss } from './bossPack';
-import { EncounterFeedback } from './EncounterFeedback';
-import { BossAnimation } from './BossAnimation';
-import { LOOT_TEXTURE, LOOT_URLS, ARTIFACT_KEYS, lootFrame } from './lootPack';
-import { PickupAnimation } from './PickupAnimation';
-import { abilityVisual } from './abilityVisual';
+
 type RenderEntity = Enemy | Projectile | XpOrb | LootItem | Chest | ArtifactDrop;
-export function preloadGameArt(scene: Phaser.Scene) {
-  preloadWarriorUltimates(scene);
-  preloadFireUltimate(scene);
-  preloadFrostUltimate(scene);
-  if(!scene.textures.exists(RUNE_ACCEPTED_TEXTURE))scene.load.atlas(RUNE_ACCEPTED_TEXTURE,import.meta.env.BASE_URL+RUNE_ACCEPTED_URLS.image,import.meta.env.BASE_URL+RUNE_ACCEPTED_URLS.data);
-  for(const p of WARDEN_AI_PAGES)if(!scene.textures.exists(p.key))scene.load.atlas(p.key,import.meta.env.BASE_URL+p.image,import.meta.env.BASE_URL+p.data);
-  if(!scene.textures.exists(ASTRAL_FLAME_TEXTURE))scene.load.atlas(ASTRAL_FLAME_TEXTURE,import.meta.env.BASE_URL+ASTRAL_FLAME_URLS.image,import.meta.env.BASE_URL+ASTRAL_FLAME_URLS.data);
-  if(!scene.textures.exists(ASTRAL_PROJECTILE_TEXTURE))scene.load.atlas(ASTRAL_PROJECTILE_TEXTURE,import.meta.env.BASE_URL+ASTRAL_PROJECTILE_URLS.image,import.meta.env.BASE_URL+ASTRAL_PROJECTILE_URLS.data);
-  if(!scene.textures.exists(RUNE_VFX_TEXTURE))scene.load.atlas(RUNE_VFX_TEXTURE,import.meta.env.BASE_URL+RUNE_VFX_URLS.image,import.meta.env.BASE_URL+RUNE_VFX_URLS.data);
-  if(!scene.textures.exists(MAGE_SHIELD_NOVA_TEXTURE))scene.load.atlas(MAGE_SHIELD_NOVA_TEXTURE,import.meta.env.BASE_URL+MAGE_SHIELD_NOVA_URLS.image,import.meta.env.BASE_URL+MAGE_SHIELD_NOVA_URLS.data);
-  if(!scene.textures.exists(MAGE_BLINK_TEXTURE))scene.load.atlas(MAGE_BLINK_TEXTURE,import.meta.env.BASE_URL+MAGE_BLINK_URLS.image,import.meta.env.BASE_URL+MAGE_BLINK_URLS.data);
-  if(!scene.textures.exists(MAGE_MOVING_CAST_V2_TEXTURE))scene.load.atlas(MAGE_MOVING_CAST_V2_TEXTURE,import.meta.env.BASE_URL+MAGE_MOVING_CAST_V2_URLS.image,import.meta.env.BASE_URL+MAGE_MOVING_CAST_V2_URLS.data);
-  if(!scene.textures.exists(MAGE_CAST_V2_TEXTURE))scene.load.atlas(MAGE_CAST_V2_TEXTURE,import.meta.env.BASE_URL+MAGE_CAST_V2_URLS.image,import.meta.env.BASE_URL+MAGE_CAST_V2_URLS.data);
-  if(!scene.textures.exists(MAGE_RUN_V2_TEXTURE))scene.load.atlas(MAGE_RUN_V2_TEXTURE,import.meta.env.BASE_URL+MAGE_RUN_V2_URLS.image,import.meta.env.BASE_URL+MAGE_RUN_V2_URLS.data);
-  if(!scene.textures.exists(MAGE_IDLE_TEXTURE))scene.load.atlas(MAGE_IDLE_TEXTURE,import.meta.env.BASE_URL+MAGE_IDLE_URLS.image,import.meta.env.BASE_URL+MAGE_IDLE_URLS.data);
-  if(!scene.textures.exists(MAGE_PHANTOM_TEXTURE))scene.load.atlas(MAGE_PHANTOM_TEXTURE,import.meta.env.BASE_URL+MAGE_PHANTOM_URLS.image,import.meta.env.BASE_URL+MAGE_PHANTOM_URLS.data);
-  if(!scene.textures.exists(LIGHTNING_ULTIMATE_TEXTURE))scene.load.atlas(LIGHTNING_ULTIMATE_TEXTURE,import.meta.env.BASE_URL+LIGHTNING_ULTIMATE_URLS.image,import.meta.env.BASE_URL+LIGHTNING_ULTIMATE_URLS.data);
-  if(!scene.textures.exists(REGULAR_LIGHTNING_TEXTURE))scene.load.atlas(REGULAR_LIGHTNING_TEXTURE,import.meta.env.BASE_URL+REGULAR_LIGHTNING_URLS.image,import.meta.env.BASE_URL+REGULAR_LIGHTNING_URLS.data);
-  if(!scene.textures.exists(FIREBALL_TEXTURE))scene.load.atlas(FIREBALL_TEXTURE,import.meta.env.BASE_URL+FIREBALL_URLS.image,import.meta.env.BASE_URL+FIREBALL_URLS.data);
-  if(!scene.textures.exists(ASTRAL_REVENANT_TEXTURE))scene.load.atlas(ASTRAL_REVENANT_TEXTURE,import.meta.env.BASE_URL+ASTRAL_REVENANT_URLS.image,import.meta.env.BASE_URL+ASTRAL_REVENANT_URLS.data);
-  if(!scene.textures.exists(BRIAR_BEAST_TEXTURE))scene.load.atlas(BRIAR_BEAST_TEXTURE,import.meta.env.BASE_URL+BRIAR_BEAST_URLS.image,import.meta.env.BASE_URL+BRIAR_BEAST_URLS.data);
-  if(!scene.textures.exists(RUNE_WARDEN_TEXTURE))scene.load.atlas(RUNE_WARDEN_TEXTURE,import.meta.env.BASE_URL+RUNE_WARDEN_URLS.image,import.meta.env.BASE_URL+RUNE_WARDEN_URLS.data);
-  if(!scene.textures.exists(MAGE_METEOR_TEXTURE))scene.load.atlas(MAGE_METEOR_TEXTURE,import.meta.env.BASE_URL+MAGE_METEOR_URLS.image,import.meta.env.BASE_URL+MAGE_METEOR_URLS.data);
-  if(!scene.textures.exists(MAGE_ABILITY_TEXTURE))scene.load.atlas(MAGE_ABILITY_TEXTURE,import.meta.env.BASE_URL+MAGE_ABILITY_URLS.image,import.meta.env.BASE_URL+MAGE_ABILITY_URLS.data);
-  if(!scene.textures.exists(MELEE_COMBO_TEXTURE))scene.load.atlas(MELEE_COMBO_TEXTURE,import.meta.env.BASE_URL+MELEE_COMBO_URLS.image,import.meta.env.BASE_URL+MELEE_COMBO_URLS.data);
-  if(!scene.textures.exists(FLAME_STRIKE_TEXTURE))scene.load.atlas(FLAME_STRIKE_TEXTURE,import.meta.env.BASE_URL+FLAME_STRIKE_URLS.image,import.meta.env.BASE_URL+FLAME_STRIKE_URLS.data);
-  for(let i=0;i<WARDEN.pages;i++)if(!scene.textures.exists(wardenTexture(i)))scene.load.atlas(wardenTexture(i),import.meta.env.BASE_URL+`assets/hd/ash-warden-v1/${i}.png`,import.meta.env.BASE_URL+`assets/hd/ash-warden-v1/${i}.json`);
-  if (!scene.textures.exists(HD_CORE_TEXTURE)) scene.load.atlas(HD_CORE_TEXTURE, import.meta.env.BASE_URL + HD_CORE_URLS.image, import.meta.env.BASE_URL + HD_CORE_URLS.data);
-  if (!scene.textures.exists(RUNNER_TEXTURE)) scene.load.atlas(RUNNER_TEXTURE, import.meta.env.BASE_URL + RUNNER_URLS.image, import.meta.env.BASE_URL + RUNNER_URLS.data);
-  if(!MAGE_HERO.complete)throw new Error('Mage hero atlas is incomplete; finish the strict asset build.');
-  for(const page of MAGE_HERO.pages){const urls=mageHeroUrls(page.index),key=mageHeroTexture(page.index);if(!scene.textures.exists(key))scene.load.atlas(key,import.meta.env.BASE_URL+urls.image,import.meta.env.BASE_URL+urls.data);}
-  for(const page of WARRIOR_HERO.pages){const urls=warriorHeroUrls(page.index),key=warriorHeroTexture(page.index);if(!scene.textures.exists(key))scene.load.atlas(key,import.meta.env.BASE_URL+urls.image,import.meta.env.BASE_URL+urls.data);}
-  for(const page of WARRIOR_SKILLS.pages){const urls=warriorSkillsUrls(page.index),key=warriorSkillsTexture(page.index);if(!scene.textures.exists(key))scene.load.atlas(key,import.meta.env.BASE_URL+urls.image,import.meta.env.BASE_URL+urls.data);}
-  if(!scene.textures.exists(WAR_BANNER_TEXTURE))scene.load.image(WAR_BANNER_TEXTURE,import.meta.env.BASE_URL+WAR_BANNER_URL);
-  if (!scene.textures.exists(ENEMY_TEXTURE)) scene.load.atlas(ENEMY_TEXTURE, import.meta.env.BASE_URL + ENEMY_URLS.image, import.meta.env.BASE_URL + ENEMY_URLS.data);
-  if (!scene.textures.exists(GUARDIAN_TEXTURE)) scene.load.atlas(GUARDIAN_TEXTURE, import.meta.env.BASE_URL + GUARDIAN_URLS.image, import.meta.env.BASE_URL + GUARDIAN_URLS.data);
-  if (!scene.textures.exists(BOSS_TEXTURE)) scene.load.atlas(BOSS_TEXTURE, import.meta.env.BASE_URL + BOSS_URLS.image, import.meta.env.BASE_URL + BOSS_URLS.data);
-  if (!scene.textures.exists(LOOT_TEXTURE)) scene.load.atlas(LOOT_TEXTURE, import.meta.env.BASE_URL + LOOT_URLS.image, import.meta.env.BASE_URL + LOOT_URLS.data);
+export function preloadGameArt(scene: Phaser.Scene, baseUrl = import.meta.env.BASE_URL) {
+  for (const file of nativeAssetFiles) {
+    if (scene.textures.exists(file.key)) continue;
+    if (file.data) scene.load.atlas(file.key, baseUrl + file.image, baseUrl + file.data);
+    else scene.load.image(file.key, baseUrl + file.image);
+  }
 }
 export function applyVisual(sprite: Phaser.GameObjects.Sprite, selection: VisualSelection, multiplier = 1) {
   const spec = ASSET_REGISTRY[selection.asset], size = visualDimensions(selection, multiplier);
-  sprite.setTexture(selection.texture, selection.frame).setOrigin(spec.origin.x, spec.origin.y).setDisplaySize(size.width, size.height);
+  const origin = selection.origin ?? spec.origin;
+  sprite.setTexture(selection.texture, selection.frame).setOrigin(origin.x, origin.y).setDisplaySize(size.width, size.height);
 }
 export function entityVisual(entity: RenderEntity, elapsed: number): VisualSelection {
   if ('kind' in entity) return enemyVisual(entity.kind, entity.elite, elapsed, entity.id);
@@ -160,7 +131,8 @@ export class GameArt {
   private frozenVisuals=new Map<number,VisualSelection>();
   private frozenRun='';
   heroFrame = '';
-  constructor(private scene: Phaser.Scene) { this.warriorSkills=new WarriorSkillArt(scene);this.warriorMoving=new WarriorMovingCleaveArt(scene);this.blinkArt=new MageBlinkArt(scene);this.regularLightningArt=new RegularLightningArt(scene);this.fireballArt=new FireballArt(scene);this.runeArt=new RuneWardenArt(scene);this.astralArt=new AstralRevenantArt(scene);this.mageAbilityArt=new MageAbilityArt(scene);this.finalArt=new FinalBossArt(scene);this.encounterGround = scene.add.graphics().setDepth(-1).setName('encounter-ground'); this.ultimateArt=new UltimateArt(scene); this.playerHealth = new PlayerHealthBar(scene); this.elites = new EliteAdornment(scene); this.mageHeroArt=new MageHeroArt(scene,this.casting); for (const key of [WAR_BANNER_TEXTURE,RUNE_ACCEPTED_TEXTURE,...WARDEN_AI_PAGES.map(p=>p.key),ASTRAL_FLAME_TEXTURE,ASTRAL_PROJECTILE_TEXTURE,RUNE_VFX_TEXTURE,MAGE_SHIELD_NOVA_TEXTURE,MAGE_BLINK_TEXTURE,MAGE_MOVING_CAST_V2_TEXTURE,MAGE_CAST_V2_TEXTURE,MAGE_RUN_V2_TEXTURE,MAGE_IDLE_TEXTURE,LIGHTNING_ULTIMATE_TEXTURE,REGULAR_LIGHTNING_TEXTURE,FIREBALL_TEXTURE,MAGE_METEOR_TEXTURE,ASTRAL_REVENANT_TEXTURE,BRIAR_BEAST_TEXTURE,RUNE_FLASH_TEXTURE,RUNE_WARDEN_TEXTURE,MAGE_ABILITY_TEXTURE,...Array.from({length:WARDEN.pages},(_,i)=>wardenTexture(i)), ...MAGE_HERO.pages.map(p=>mageHeroTexture(p.index)), ...WARRIOR_HERO.pages.map(p=>warriorHeroTexture(p.index)), ...WARRIOR_SKILLS.pages.map(p=>warriorSkillsTexture(p.index)), HD_CORE_TEXTURE, RUNNER_TEXTURE, ENEMY_TEXTURE, GUARDIAN_TEXTURE, BOSS_TEXTURE, LOOT_TEXTURE]) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST); }
+  private customEffects: CustomEffects;
+  constructor(private scene: Phaser.Scene, private theme: VisualTheme = defaultTheme) { this.customEffects = new CustomEffects(scene,theme); this.warriorSkills=new WarriorSkillArt(scene);this.warriorMoving=new WarriorMovingCleaveArt(scene);this.blinkArt=new MageBlinkArt(scene);this.regularLightningArt=new RegularLightningArt(scene);this.fireballArt=new FireballArt(scene);this.runeArt=new RuneWardenArt(scene);this.astralArt=new AstralRevenantArt(scene);this.mageAbilityArt=new MageAbilityArt(scene);this.finalArt=new FinalBossArt(scene);this.encounterGround = scene.add.graphics().setDepth(-1).setName('encounter-ground'); this.ultimateArt=new UltimateArt(scene); this.playerHealth = new PlayerHealthBar(scene); this.elites = new EliteAdornment(scene); this.mageHeroArt=new MageHeroArt(scene,this.casting); for (const key of [WAR_BANNER_TEXTURE,RUNE_ACCEPTED_TEXTURE,...WARDEN_AI_PAGES.map(p=>p.key),ASTRAL_FLAME_TEXTURE,ASTRAL_PROJECTILE_TEXTURE,RUNE_VFX_TEXTURE,MAGE_SHIELD_NOVA_TEXTURE,MAGE_BLINK_TEXTURE,MAGE_MOVING_CAST_V2_TEXTURE,MAGE_CAST_V2_TEXTURE,MAGE_RUN_V2_TEXTURE,MAGE_IDLE_TEXTURE,LIGHTNING_ULTIMATE_TEXTURE,REGULAR_LIGHTNING_TEXTURE,FIREBALL_TEXTURE,MAGE_METEOR_TEXTURE,ASTRAL_REVENANT_TEXTURE,BRIAR_BEAST_TEXTURE,RUNE_FLASH_TEXTURE,RUNE_WARDEN_TEXTURE,MAGE_ABILITY_TEXTURE,...Array.from({length:WARDEN.pages},(_,i)=>wardenTexture(i)), ...MAGE_HERO.pages.map(p=>mageHeroTexture(p.index)), ...WARRIOR_HERO.pages.map(p=>warriorHeroTexture(p.index)), ...WARRIOR_SKILLS.pages.map(p=>warriorSkillsTexture(p.index)), HD_CORE_TEXTURE, RUNNER_TEXTURE, ENEMY_TEXTURE, GUARDIAN_TEXTURE, BOSS_TEXTURE, LOOT_TEXTURE]) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST); }
   prepare(world: World) { this.warriorSkills.prepare(world);this.encounterFeedback.prepare(world); this.runner.prepare(world); this.packed.prepare(world); this.guardian.prepare(world); this.bosses.prepare(world); this.pickups.prepare(world); }
   observeCasts(world: World) { this.casting.observe(world);this.spellOrigins.observe(world); }
   projectileView(projectile:Projectile,world:World){if(projectile.source==='blades'&&!projectile.hostile)return {...projectile,y:projectile.y-WARRIOR_CAST.spearVisualHeight,rotation:Math.atan2(projectile.vy,projectile.vx)};const view=this.spellOrigins.projectile(projectile,world.elapsed);return projectile.appearance==='arcane-volley'?{...view,rotation:view.rotation+RUNE_FLIGHT_ANGLE}:view;}
@@ -172,6 +144,10 @@ export class GameArt {
     this.frozenVisuals.delete(entity.id);return this.liveEntityVisual(entity,world);
   }
   private liveEntityVisual(entity: RenderEntity, world: World): VisualSelection {
+    const id = 'kind' in entity ? world.enemyDefinition(entity.definitionId ?? entity.kind)!.asset : 'vx' in entity ? entity.hostile ? this.theme.projectiles.hostile : entity.source && entity.source in world.abilities ? world.skill(entity.source as keyof typeof world.abilities).asset : this.theme.projectiles.friendly : undefined;
+    const custom = id ? customVisual(this.theme,id,'vx' in entity?'flight':'walk',world.elapsed,'kind' in entity && entity.x > world.player.x?'west':'east') : undefined;
+    if(custom) return custom;
+
     if('vx'in entity&&entity.source==='blades'&&!entity.hostile)return selectAsset('spear','spear');
 
     if ('kind' in entity && entity.kind === 'runner') return enemyVisual('runner', entity.elite, world.elapsed, entity.id, this.runner.view(entity, world));
@@ -187,6 +163,9 @@ export class GameArt {
     return entityVisual(entity, world.elapsed);
   }
   hero(sprite: Phaser.GameObjects.Sprite, world: World, _facing: Facing, moving: boolean, multiplier = 1) {
+    const dir = Math.abs(world.facing.x)>Math.abs(world.facing.y) ? world.facing.x<0?'west':'east' : world.facing.y<0?'north':'south';
+    const custom = customVisual(this.theme,world.hero.asset,moving?world.hero.animations.move:world.hero.animations.idle,world.elapsed,dir);
+    if(custom){ this.mageHeroArt.destroy();this.warriorMoving.hide();this.spellOrigins.clear();applyVisual(sprite,custom,multiplier);sprite.setFlipX(custom.flipX).setRotation(0);this.heroFrame=String(custom.frame??'');return; }
     if (this.heroRunId !== world.runId) { this.heroHp = world.player.hp; this.heroHurtStarted = -Infinity; this.heroMoving = false; }
     if (this.heroRunId !== world.runId || world.status !== 'over') this.heroDeathAge = 0;
     this.heroRunId = world.runId;
@@ -211,9 +190,9 @@ export class GameArt {
   warriorSlash(){return this.warriorPose?.slash??null;}
   update(world: World, intensity: number, reducedMotion=false, reducedFlash=false) {
     this.warriorMoving.sync();this.warriorSkills.render(world,intensity);
-    this.blinkArt.render(world,intensity,reducedFlash);this.fireballArt.render(world,intensity);this.regularLightningArt.render(world,intensity,this.spellOrigins.lightningOrigins());
-    this.finalArt.render(world,intensity,reducedMotion);
-    this.mageAbilityArt.render(world,intensity,reducedFlash);this.runeArt.render(world,intensity);this.astralArt.render(world,intensity);
+    this.blinkArt.render(world,intensity,reducedFlash);if(!customAsset(this.theme,world.skill('fireball').asset))this.fireballArt.render(world,intensity);if(!customAsset(this.theme,world.skill('lightning').asset))this.regularLightningArt.render(world,intensity,this.spellOrigins.lightningOrigins());
+    if(!customAsset(this.theme,world.enemyDefinition('ashGuard')?.asset??''))this.finalArt.render(world,intensity,reducedMotion);
+    this.mageAbilityArt.render(world,intensity,reducedFlash, id => !customAsset(this.theme,world.skill(id).asset));this.customEffects.update(world);this.runeArt.render(world,intensity);this.astralArt.render(world,intensity);
     const liveIds=new Set(world.enemies.map(e=>e.id));for(const id of this.frozenVisuals.keys())if(!liveIds.has(id))this.frozenVisuals.delete(id);
     if(reducedMotion&&world.ultimate.selected==='lightning')this.heroSprite?.setRotation(0);
     this.mageHeroArt.sync();
@@ -311,5 +290,5 @@ export class GameArt {
       actors: this.scene.children.getAll().filter(o => o.type === 'Sprite' && o.active).map(o => { const s = o as Phaser.GameObjects.Sprite; return { texture: s.texture.key, frame: s.frame.name, width: s.displayWidth, height: s.displayHeight, x: s.x, y: s.y, depth:s.depth, rotation:s.rotation, alpha:s.alpha, tint:s.tintTopLeft, visible:s.visible, originX:s.originX, originY:s.originY }; }),
     };
   }
-destroy() { this.warriorMoving.destroy();this.warriorSkills.destroy();this.warriorAnimation.clear();this.warriorPose=undefined;this.blinkArt.destroy();this.spellOrigins.clear();this.regularLightningArt.destroy();this.fireballArt.destroy();this.astralArt.destroy();this.runeArt.destroy();this.mageAbilityArt.destroy();this.frozenVisuals.clear();this.ultimateArt.destroy();this.finalArt.destroy(); this.encounterGround.destroy(); this.encounterFeedback.clear(); this.mageHeroArt.destroy(); this.playerHealth.destroy(); for (const image of [...this.shadows, ...this.cleaves, ...this.runnerCorpses, ...this.packedCorpses, ...this.bossCorpses, ...this.pickupImages]) image.destroy(); this.pickupImages = []; this.pickups.clear(); this.bossCorpses = []; this.bosses.clear(); for (const image of this.guardianCorpses) image.destroy(); this.guardianCorpses = []; this.elites.destroy(); this.guardian.clear(); this.shadows = []; this.cleaves = []; this.runnerCorpses = []; this.packedCorpses = []; this.runner.destroy(); this.packed.clear(); }
+destroy() { this.customEffects.destroy();this.warriorMoving.destroy();this.warriorSkills.destroy();this.warriorAnimation.clear();this.warriorPose=undefined;this.blinkArt.destroy();this.spellOrigins.clear();this.regularLightningArt.destroy();this.fireballArt.destroy();this.astralArt.destroy();this.runeArt.destroy();this.mageAbilityArt.destroy();this.frozenVisuals.clear();this.ultimateArt.destroy();this.finalArt.destroy(); this.encounterGround.destroy(); this.encounterFeedback.clear(); this.mageHeroArt.destroy(); this.playerHealth.destroy(); for (const image of [...this.shadows, ...this.cleaves, ...this.runnerCorpses, ...this.packedCorpses, ...this.bossCorpses, ...this.pickupImages]) image.destroy(); this.pickupImages = []; this.pickups.clear(); this.bossCorpses = []; this.bosses.clear(); for (const image of this.guardianCorpses) image.destroy(); this.guardianCorpses = []; this.elites.destroy(); this.guardian.clear(); this.shadows = []; this.cleaves = []; this.runnerCorpses = []; this.packedCorpses = []; this.runner.destroy(); this.packed.clear(); }
 }

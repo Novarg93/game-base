@@ -16,6 +16,6 @@ export function updateRusher(w: World, e: Enemy, dt: number) {
   if(distance(e,w.player)<e.radius+9)w.damagePlayer(e.damage);
 }
 export function onSpecialDeath(w: World, e: Enemy) {
-  if (e.kind === 'splitter' && !e.offspring) for (let i=0;i<2;i++) { const child=w.spawn('grunt',{x:e.x+(i?10:-10),y:e.y+8}); if(child){ child.offspring=true; child.hp=child.maxHp=9; child.speed=55; child.xp=1; } }
+  if (e.kind === 'splitter' && !e.offspring) for (let i=0;i<2;i++) { const child=w.spawn(w.enemyDefinition(e.definitionId ?? e.kind)?.spawn.offspring ?? 'grunt',{x:e.x+(i?10:-10),y:e.y+8}); if(child){ child.offspring=true; child.hp=child.maxHp=9; child.speed=55; child.xp=1; } }
   if(e.modifier==='volatile' && w.impacts.length+w.zones.length<24) w.impacts.push({id:w.id(),x:e.x,y:e.y,radius:44,damage:18,landAt:w.elapsed+0.9,hostile:true});
 }

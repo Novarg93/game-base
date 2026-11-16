@@ -1,0 +1,26 @@
+[
+  {
+    "mode": "default",
+    "fixture": "1280x720 headless Chrome, 150 mixed regular enemies, invulnerable fixture, 2s warmup + 4.8s sampling; not a full-run benchmark",
+    "averageFps": 55.63838450113932,
+    "averageUpdateMs": 1.0333333263794582,
+    "maxUpdateMs": 2,
+    "peakEnemies": 150,
+    "peakProjectiles": 37,
+    "textureBytes": 263392512,
+    "presentation": "hd",
+    "errors": []
+  },
+  {
+    "mode": "primitive",
+    "fixture": "1280x720 headless Chrome, 150 mixed regular enemies, invulnerable fixture, 2s warmup + 4.8s sampling; not a full-run benchmark",
+    "averageFps": 60.14068094889323,
+    "averageUpdateMs": 0.7333333368102709,
+    "maxUpdateMs": 3.5999999940395355,
+    "peakEnemies": 150,
+    "peakProjectiles": 38,
+    "textureBytes": 0,
+    "presentation": "generic",
+    "errors": []
+  }
+]

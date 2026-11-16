@@ -1,4 +1,6 @@
 import type Phaser from 'phaser';
+import { assetUrl } from '../art/assetUrl';
+import type { VisualTheme } from '../art/themes/types';
 import { AUDIO_BUDGET, type AssetId, type AudioBus } from './catalog';
 import { synthesize } from './synthesis';
 import type { AudioBackend, AudioVoice } from './AudioBackend';
@@ -22,7 +24,7 @@ export class PhaserAudioBackend implements AudioBackend {
   private musicPlayer?: StreamingMusic;
   private musicUnavailable=false;
   private failedMusic=new Set<MusicTrackId>();
-  constructor(manager: Phaser.Sound.WebAudioSoundManager | Phaser.Sound.HTML5AudioSoundManager | Phaser.Sound.NoAudioSoundManager, private cache: Phaser.Cache.BaseCache) {
+  constructor(manager: Phaser.Sound.WebAudioSoundManager | Phaser.Sound.HTML5AudioSoundManager | Phaser.Sound.NoAudioSoundManager, private cache: Phaser.Cache.BaseCache, private baseUrl = import.meta.env.BASE_URL, private audioPack?: VisualTheme['audio']) {
     try {
       if (!('context' in manager) || !('destination' in manager)) return;
       this.context = manager.context;
@@ -45,7 +47,7 @@ export class PhaserAudioBackend implements AudioBackend {
       if (this.cache.has(key)) return;
       this.samplePending++;
       try {
-        const response = await fetch(audioSampleUrl(id), { signal: this.downloads.signal });
+        const response = await fetch(assetUrl(this.baseUrl, this.audioPack?.samples[id] ?? audioSampleUrl(id).slice(import.meta.env.BASE_URL.length)), { signal: this.downloads.signal });
         if (!response.ok) throw new Error(`Audio HTTP ${response.status}`);
         const buffer = await context.decodeAudioData(await response.arrayBuffer());
         if (!this.dead && !this.downloads.signal.aborted) this.cache.add(key, buffer);
@@ -58,7 +60,7 @@ export class PhaserAudioBackend implements AudioBackend {
     if(!track||!this.running){this.musicPlayer?.stop();return false;}
     if(this.musicUnavailable||!this.context)return false;
     if(this.failedMusic.has(track)){this.musicPlayer?.destroy();this.musicPlayer=undefined;return false;}
-    if(!this.musicPlayer){try{this.musicPlayer=new StreamingMusic(this.context,this.buses.get('music')!);}catch{this.musicUnavailable=true;return false;}}
+    if(!this.musicPlayer){try{this.musicPlayer=new StreamingMusic(this.context,this.buses.get('music')!, this.baseUrl, this.audioPack?.music);}catch{this.musicUnavailable=true;return false;}}
     const owned=this.musicPlayer.update(track);
     if(!owned){for(const failed of this.musicPlayer.diagnostics().failed)this.failedMusic.add(failed);this.musicPlayer.destroy();this.musicPlayer=undefined;}
     return owned;

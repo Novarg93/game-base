@@ -7,5 +7,5 @@ export class ScoreSystem {
   regularKills=0; eliteKills=0; bossKills=0; guardianKills=0; damage=emptyDamage();
   recordDamage(source: DamageSource, amount: number) { if(Number.isFinite(amount) && amount>0)this.damage[source]+=amount; }
   // Called only by the live->dead transition in World.damageEnemy, never by despawn.
-  recordKill(kind: EnemyKind, elite: boolean) { this.score += ENEMIES[kind].score * (elite ? 3 : 1); this.kills++; this.byKind[kind]++; if(kind==='guardian')this.guardianKills++;else if(isBossKind(kind))this.bossKills++;else if(elite)this.eliteKills++;else this.regularKills++; }
+  recordKill(kind: EnemyKind, elite: boolean, score = ENEMIES[kind].score * (elite ? 3 : 1)) { this.score += score; this.kills++; this.byKind[kind]++; if(kind==='guardian')this.guardianKills++;else if(isBossKind(kind))this.bossKills++;else if(elite)this.eliteKills++;else this.regularKills++; }
 }

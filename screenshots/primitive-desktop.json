@@ -1,0 +1,44 @@
+{
+  "metrics": {
+    "fps": 59.75,
+    "updateMs": 0.20000001788139343,
+    "enemies": 2,
+    "projectiles": 1,
+    "orbs": 0,
+    "effects": 1,
+    "bosses": 1,
+    "chunks": 0,
+    "sprites": 0,
+    "pooledSprites": 0,
+    "guardians": 0,
+    "artifacts": {
+      "items": 0,
+      "allocated": 0
+    },
+    "radar": {
+      "updates": 6,
+      "markers": 3,
+      "listeners": 1
+    },
+    "loot": {
+      "items": 0,
+      "chests": 0,
+      "buffs": 0,
+      "trail": 0,
+      "allocatedItems": 0,
+      "allocatedChests": 0
+    },
+    "allocations": {
+      "orbs": 1,
+      "projectiles": 1,
+      "effects": 1
+    }
+  },
+  "presentation": {
+    "renderer": "generic",
+    "images": 0,
+    "objects": 4,
+    "textures": []
+  },
+  "artBytes": 0
+}

@@ -18,7 +18,7 @@ export function tickAbilities(w: World) {
   for (const def of definitions) {
     if(w.character==='warrior'&&(w.elapsed<w.mobility.started+.18&&w.mobility.sequence>0||def.id!=='cleave'&&(w.warrior.gestureUntil>w.elapsed||!!w.warrior.cleave&&!w.warrior.cleave.hit)))continue;
     const state = w.abilities[def.id];
-    if (state.level > 0 && w.elapsed >= state.readyAt && activate[def.id](w)) { state.readyAt = w.elapsed + effectiveCooldown(def.id === 'frost' ? frostNovaStats(state.level).cooldown : def.cooldown, w.effectiveCooldown); if (w.character !== 'mage') {w.feedback({ type: 'ability', ability: def.id });if(def.id!=='cleave')w.warrior.gestureUntil=w.elapsed+WARRIOR_CAST.gesture;} }
+    if (state.level > 0 && w.elapsed >= state.readyAt && activate[def.id](w)) { state.readyAt = w.elapsed + effectiveCooldown(def.id === 'frost' ? def.cooldown * (frostNovaStats(state.level).cooldown / frostNovaStats(1).cooldown) : def.cooldown, w.effectiveCooldown); if (w.character !== 'mage') {w.feedback({ type: 'ability', ability: def.id });if(def.id!=='cleave')w.warrior.gestureUntil=w.elapsed+WARRIOR_CAST.gesture;} }
   }
   if(w.character === 'warrior')tickWarrior(w);
 }

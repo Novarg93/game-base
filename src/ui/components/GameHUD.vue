@@ -5,20 +5,21 @@ import BuffDock from './BuffDock.vue';
 import GameRadar from './GameRadar.vue';
 import RunArtifacts from './RunArtifacts.vue';
 import MobilityControl from './MobilityControl.vue';
-import { commands } from '../../game/events/bridge';
-import { RUN_LIMITS } from '../../game/config/runLimits';
+import { useGameBridge } from '../gameBridge';
+const { commands } = useGameBridge();
+
 import { xpPercent } from '../hudStatus';
 import { useInputDevice } from '../inputDevice';
 import EventTimeline from './EventTimeline.vue';
 import BiomePhaseNotice from './BiomePhaseNotice.vue';
 const inputDevice = useInputDevice();
-defineProps<{ state: Snapshot }>(); const emit = defineEmits<{ pause: [] }>();
+defineProps<{ state: Snapshot; icons?: Readonly<Record<string,string>> }>(); const emit = defineEmits<{ pause: [] }>();
 </script>
 <template>
   <header class="hud">
     <div class="vitals">
-      <b class="hero-name">✦ {{ state.character === 'warrior' ? 'WARRIOR' : 'MAGE' }}</b>
-      <div class="level-line"><small>УРОВЕНЬ {{ state.level }}</small><span class="xp-compact" role="progressbar" aria-label="Опыт" :aria-valuetext="state.level>=RUN_LIMITS.maxLevel?'Максимальный уровень':undefined" :aria-valuenow="xpPercent(state.xp, state.xpNext)" aria-valuemin="0" aria-valuemax="100">{{ state.level>=RUN_LIMITS.maxLevel?'MAX':xpPercent(state.xp, state.xpNext)+'%' }}</span></div>
+      <b class="hero-name">✦ {{ state.heroName }}</b>
+      <div class="level-line"><small>УРОВЕНЬ {{ state.level }}</small><span class="xp-compact" role="progressbar" aria-label="Опыт" :aria-valuetext="state.level>=state.maxLevel?'Максимальный уровень':undefined" :aria-valuenow="xpPercent(state.xp, state.xpNext)" aria-valuemin="0" aria-valuemax="100">{{ state.level>=state.maxLevel?'MAX':xpPercent(state.xp, state.xpNext)+'%' }}</span></div>
       <span class="health-accessibility" role="progressbar" aria-label="Здоровье" :aria-valuenow="state.hp" aria-valuemin="0" :aria-valuemax="state.maxHp">{{ Math.ceil(state.hp) }} / {{ state.maxHp }}</span>
       <span v-if="state.absorb > 0" class="health-accessibility" role="progressbar" aria-label="Absorb" :aria-valuenow="state.absorb" aria-valuemin="0" :aria-valuemax="state.maxHp">{{ Math.ceil(state.absorb) }}</span>
     </div>
@@ -28,7 +29,7 @@ defineProps<{ state: Snapshot }>(); const emit = defineEmits<{ pause: [] }>();
       <button class="pause-button" aria-label="Пауза" @click="emit('pause')">Ⅱ<small v-if="inputDevice === 'gamepad'" class="pause-key">START</small></button>
     </div>
   </header>
-  <EventTimeline v-if="!state.practice && state.status !== 'over' && state.finalEncounter.phase==='inactive'" :state="state" />
+  <EventTimeline v-if="state.encountersEnabled && !state.practice && state.status !== 'over' && state.finalEncounter.phase==='inactive'" :state="state" />
   <BiomePhaseNotice v-if="!state.practice" :state="state" />
   <div class="run-extras"><BuffDock :state="state" /><RunArtifacts :state="state" /></div>
   <GameRadar />
@@ -36,7 +37,7 @@ defineProps<{ state: Snapshot }>(); const emit = defineEmits<{ pause: [] }>();
   <div class="skill-dock" role="list" aria-label="Способности">
     <MobilityControl :state="state" inline />
     <div v-for="ability in state.abilities" :key="ability.id" role="listitem" :aria-label="`${ability.name} · ${ability.level ? 'Ранг ' + ability.level : 'Открой при повышении уровня'}${ability.level && ability.readyIn > 0 ? ' · ' + Math.ceil(ability.readyIn) + ' секунд' : ''}`" :class="['skill-slot', ability.id, { locked: ability.level === 0 }]" :title="`${ability.name} · ${ability.level ? 'Ранг ' + ability.level : 'Открой при повышении уровня'}`">
-      <span>{{ ability.icon }}</span><b>{{ ability.level ? ability.level : '·' }}</b><small v-if="ability.level && ability.readyIn > 0">{{ Math.ceil(ability.readyIn) }}с</small><i v-if="ability.level === 0">◇</i>
+      <span><img v-if="icons?.[ability.contentId] || icons?.[ability.id]" :src="icons[ability.contentId] ?? icons[ability.id]" alt="" class="theme-skill-icon" /><template v-else>{{ ability.icon }}</template></span><b>{{ ability.level ? ability.level : '·' }}</b><small v-if="ability.level && ability.readyIn > 0">{{ Math.ceil(ability.readyIn) }}с</small><i v-if="ability.level === 0">◇</i>
     </div>
   </div>
   <div class="control-hint">{{ inputDevice === 'gamepad' ? 'ЛЕВЫЙ СТИК' : 'W A S D' }} <span>движение</span> <kbd>{{ inputDevice === 'gamepad' ? 'X' : 'SPACE' }}</kbd> <span>{{ state.mobility.name }}</span> <kbd>{{ inputDevice === 'gamepad' ? 'START' : 'ESC' }}</kbd> <span>пауза</span></div>

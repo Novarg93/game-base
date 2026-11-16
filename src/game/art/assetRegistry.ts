@@ -98,7 +98,7 @@ export const ARTIFACT_ART: Record<ArtifactId, AssetId> = { health: 'artifactHeal
 export const ABILITY_ART: Record<AbilityId, AssetId> = { fireball: 'fireball', frost: 'frost', lightning: 'lightning', meteor: 'meteor', shield: 'shield', cleave: 'cleave', whirlwind: 'whirlwind', slam: 'slam', blades: 'blades', iron: 'iron' };
 export const REPLACED_LEGACY_TEXTURES: ReadonlySet<string> = new Set(['warrior', 'grunt', 'runner', 'mage', 'fireball', 'tank', 'caster', 'rusher', 'splitter', 'guardian', 'charger', 'sorcerer', 'eclipse', 'hostile', 'xp', 'loot-healing', 'loot-haste', 'loot-fury', 'loot-magnet', 'loot-chest', 'artifact']);
 export type Facing = 'down' | 'up' | 'side';
-export interface VisualSelection { asset: AssetId; texture: string; frame?: string; scale: number }
+export interface VisualSelection { asset: AssetId; texture: string; frame?: string; scale: number; dimensions?: { width: number; height: number }; origin?: { x: number; y: number }; flipX?: boolean }
 export function selectAsset(asset: AssetId, frame?: string, scale = ASSET_REGISTRY[asset].worldScale): VisualSelection { return { asset, texture: ASSET_REGISTRY[asset].source.key, frame, scale }; }
 export function heroVisual(character: CharacterId, facing: Facing, moving: boolean, _hurt: boolean, elapsed: number): VisualSelection {
   if(character==='mage')return {...selectAsset('mage'),...mageHeroSelection({motion:moving?'run':'idle',direction:facing==='up'?'north':facing==='down'?'south':'east',age:elapsed,casting:false})};
@@ -118,6 +118,7 @@ export function bossVisual(kind:'charger'|'sorcerer'|'eclipse',facing:BossFacing
   return selectAsset(kind,kind==='charger'?briarBodyFrame(facing,pose,age,remaining):kind==='sorcerer'?runeBodyFrame(facing,pose,age,remaining):astralBodyFrame(facing,pose,age,remaining));
 }
 export function visualDimensions(selection: VisualSelection, multiplier = 1) {
+  if (selection.dimensions) return { width: selection.dimensions.width * multiplier, height: selection.dimensions.height * multiplier };
   const size = ASSET_REGISTRY[selection.asset].logicalSize;
   if (!size) throw new Error(`Asset ${selection.asset} has no fixed world footprint`);
   return { width: size.width * selection.scale * multiplier, height: size.height * selection.scale * multiplier };

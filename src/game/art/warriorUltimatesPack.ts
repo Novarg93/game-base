@@ -7,8 +7,8 @@ import type { MageDirection } from './MageHeroAnimation';
 export const WARRIOR_ULTIMATES = manifest;
 export const WARRIOR_ULTIMATE_TEXTURE = 'warrior-ultimates-v1';
 export const WARRIOR_ULTIMATE_URLS = { image: 'assets/hd/warrior-ultimates-v1/0.png', data: 'assets/hd/warrior-ultimates-v1/0.json' };
-export function preloadWarriorUltimates(scene: Phaser.Scene) {
-  if (!scene.textures.exists(WARRIOR_ULTIMATE_TEXTURE)) scene.load.atlas(WARRIOR_ULTIMATE_TEXTURE, import.meta.env.BASE_URL + WARRIOR_ULTIMATE_URLS.image, import.meta.env.BASE_URL + WARRIOR_ULTIMATE_URLS.data);
+export function preloadWarriorUltimates(scene: Phaser.Scene, baseUrl = import.meta.env.BASE_URL) {
+  if (!scene.textures.exists(WARRIOR_ULTIMATE_TEXTURE)) scene.load.atlas(WARRIOR_ULTIMATE_TEXTURE, baseUrl + WARRIOR_ULTIMATE_URLS.image, baseUrl + WARRIOR_ULTIMATE_URLS.data);
 }
 export function warriorUltimateFx(id: 'vfx-earthbreaker' | 'vfx-spear-of-ruin' | 'vfx-war-banner', age: number) {
   const c = manifest.clips[id], index = id !== 'vfx-earthbreaker' ? Math.floor(Math.max(0, age) * 1000 / c.frameMs) % c.frames.length : Math.min(c.frames.length - 1, Math.floor(Math.max(0, age) * 1000 / c.frameMs));

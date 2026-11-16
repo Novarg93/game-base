@@ -1,3 +1,4 @@
+import { assetUrl } from '../art/assetUrl';
 import {MUSIC_TRACKS,MUSIC_CROSSFADE,musicTrackUrl,type MusicTrackId} from './musicTracks';
 
 interface Deck {
@@ -32,7 +33,7 @@ export class StreamingMusic {
   private failed = new Set<MusicTrackId>();
   private crossfades = 0;
   private repeats = 0;
-  constructor(private context: AudioContext, destination: AudioNode) {
+  constructor(private context: AudioContext, destination: AudioNode, private baseUrl = import.meta.env.BASE_URL, private tracks?: Readonly<Record<string,string>>) {
     try {
       for(let i=0;i<2;i++){
         const audio=new Audio();audio.preload='auto';audio.loop=false;
@@ -50,7 +51,7 @@ export class StreamingMusic {
   }
   private prepare(deck:Deck,track:MusicTrackId){
     if(deck.track===track)return;
-    this.halt(deck);deck.track=track;deck.audio.src=musicTrackUrl(track);deck.audio.load();
+    this.halt(deck);deck.track=track;deck.audio.src=assetUrl(this.baseUrl, this.tracks?.[track] ?? musicTrackUrl(track).slice(import.meta.env.BASE_URL.length));deck.audio.load();
   }
   private start(deck:Deck,track:MusicTrackId,repeat=false){
     this.prepare(deck,track);this.halt(deck);deck.audio.currentTime=0;

@@ -1,4 +1,5 @@
 export function mobileViewport() {
+  if (typeof navigator === 'undefined') return { touch: false, blocked: false };
   const touch = navigator.maxTouchPoints > 0 && matchMedia('(pointer: coarse)').matches;
   return { touch, blocked: touch && innerHeight > innerWidth };
 }

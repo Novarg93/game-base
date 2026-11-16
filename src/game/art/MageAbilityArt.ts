@@ -1,3 +1,4 @@
+import type { AbilityId } from '../abilities/types';
 import type Phaser from 'phaser';
 import type {World} from '../systems/World';
 import {MAGE_ABILITY_RUNTIME,MAGE_VFX_LIMIT} from './mageAbilityPack';
@@ -15,12 +16,12 @@ export class MageAbilityPresentation {
  private shield=new MageShieldPresentation();
  clear(){this.meteor.clear();this.shield.clear();}
  get tracked(){return this.meteor.tracked;}
- views(w:World,intensity:number,reducedFlash=false):MageAbilityView[]{
-  const meteors=this.meteor.views(w,intensity,reducedFlash);
-  const shields=this.shield.views(w,intensity,reducedFlash);
+ views(w:World,intensity:number,reducedFlash=false, enabled: (id: AbilityId) => boolean = () => true):MageAbilityView[]{
+  const meteors=enabled('meteor')?this.meteor.views(w,intensity,reducedFlash):[];
+  const shields=enabled('shield')?this.shield.views(w,intensity,reducedFlash):[];
   if(w.status==='menu'||w.status==='over')return [];
   const alpha=Math.max(0,Math.min(1,intensity)),views:MageAbilityView[]=[],depth=groundImpactDepth(w);
-  for(const e of w.effects)if(e.kind==='frost'&&e.expires>w.elapsed&&w.elapsed>=e.started){
+  for(const e of w.effects)if(enabled('frost')&&e.kind==='frost'&&e.expires>w.elapsed&&w.elapsed>=e.started){
    const age=w.elapsed-e.started;if(age>=mageShieldNovaDuration('frost-nova')-1e-7)continue;
    views.push({texture:MAGE_SHIELD_NOVA_TEXTURE,frame:mageShieldNovaFrame('frost-nova',age),x:e.x,y:e.y,size:mageNovaDisplaySize(e.radius),alpha:alpha*(reducedFlash?.65:1),depth});
   }
@@ -31,8 +32,8 @@ export class MageAbilityPresentation {
 export class MageAbilityArt {
  private presentation=new MageAbilityPresentation();private images:Phaser.GameObjects.Image[]=[];private active:MageAbilityView[]=[];
  constructor(private scene:Phaser.Scene){}
- render(w:World,intensity:number,reducedFlash=false){
-  this.active=this.presentation.views(w,intensity,reducedFlash);
+ render(w:World,intensity:number,reducedFlash=false, enabled: (id: AbilityId) => boolean = () => true){
+  this.active=this.presentation.views(w,intensity,reducedFlash,enabled);
   for(const [i,v]of this.active.entries()){
    const image=this.images[i]??this.scene.add.image(0,0,v.texture,v.frame).setName('mage-ability-vfx');this.images[i]=image;
    image.setTexture(v.texture,v.frame).setTint(0xffffff).setBlendMode(v.blendMode??'NORMAL').setRotation(0).setOrigin(v.originX??.5,v.originY??.5).setPosition(v.x,v.y).setDisplaySize(v.size,v.size).setDepth(v.depth).setAlpha(v.alpha).setVisible(true).setActive(true);

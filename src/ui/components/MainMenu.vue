@@ -2,31 +2,23 @@
 import { onMounted, ref } from 'vue';
 import { vPad } from '../gamepadNavigation';
 import { useInputDevice } from '../inputDevice';
+import type { GameDefinition } from '../../game/config/gameDefinition';
 const inputDevice = useInputDevice();
-import type { CharacterId } from '../../game/config/characters';
-import type { BiomeId } from '../../game/config/biomes';
-import { AVAILABLE_MAPS } from '../../game/config/biomes';
-import { isPublicCharacter } from '../../game/bootstrap/publicCharacters';
-const unavailable = ref(false);
-function chooseCharacter(value: CharacterId) {
-  if (!isPublicCharacter(value)) { unavailable.value = true; return; }
-  unavailable.value = false; emit('character', value);
-}
-defineProps<{ best: number; character: CharacterId; biome: BiomeId }>();
-const emit = defineEmits<{ play: []; bossPractice: []; guardianPractice: []; help: []; settings: []; records: []; character: [value: CharacterId]; biome: [value: BiomeId] }>(); const play = ref<HTMLButtonElement>(); onMounted(() => play.value?.focus());
+defineProps<{ best: number; character: string; biome: string; definition: GameDefinition }>();
+const emit = defineEmits<{ play: []; bossPractice: []; guardianPractice: []; help: []; settings: []; records: []; character: [value: string]; biome: [value: string] }>();
+const play = ref<HTMLButtonElement>(); onMounted(() => play.value?.focus());
 </script>
 <template>
  <div class="menu-shell">
   <section class="menu-content">
    <div class="eyebrow"><span class="spark">✦</span> ОДНА ИСКРА ПРОТИВ ЦЕЛОЙ ЧАЩИ</div>
-   <h1 class="wordmark">PIXEL<br><span>SURVIVOR</span><i>✦</i></h1>
-   <p class="menu-description">Чаща пробуждается.<br>Двигайся. Собирай магию. Продержись ещё минуту.</p>
-   <div class="run-selection" aria-label="Персонаж"><button :aria-pressed="character === 'mage'" v-pad="() => chooseCharacter('mage')" @click="chooseCharacter('mage')">Mage <small>100 HP · магия</small></button><button :aria-pressed="character === 'warrior'" v-pad="() => chooseCharacter('warrior')" @click="chooseCharacter('warrior')">Warrior <small>150 HP · меч и щит</small></button></div>
-   <p v-if="unavailable" class="character-notice" role="status">Warrior находится в разработке</p>
-   <div class="run-selection" aria-label="Локация"><button v-for="map in AVAILABLE_MAPS" :key="map.id" :aria-pressed="biome === map.id" v-pad="() => emit('biome',map.id)" @click="emit('biome',map.id)">{{ map.name }}</button></div>
+   <h1 class="wordmark">{{ definition.title }}<i aria-hidden="true">✦</i></h1>
+   <p class="menu-description">{{ definition.description }}</p>
+   <div class="run-selection" aria-label="Персонаж"><button v-for="hero in definition.heroes" :key="hero.id" :aria-pressed="character === hero.id" v-pad="() => emit('character',hero.id)" @click="emit('character',hero.id)">{{ hero.name }}<small>{{ hero.hp }} HP · {{ hero.archetype }}</small></button></div>
+   <div class="run-selection" aria-label="Локация"><button v-for="map in definition.maps" :key="map.id" :aria-pressed="biome === map.id" v-pad="() => emit('biome',map.id)" @click="emit('biome',map.id)">{{ map.name }}</button></div>
    <div class="start-actions"><button ref="play" class="play-button" v-pad="() => emit('play')" @click="emit('play')"><span>Начать забег</span><span>→</span></button>
-   <button class="boss-practice-button" v-pad="() => emit('bossPractice')" @click="emit('bossPractice')"><span class="practice-sword" aria-hidden="true">⚔</span><span><b>Бой со Стражем</b><small>Тренировка · Mage 54 · Гнев Небес</small></span><span aria-hidden="true">↗</span></button>
-   <button class="boss-practice-button guardian-practice-button" v-pad="() => emit('guardianPractice')" @click="emit('guardianPractice')"><span class="practice-sword" aria-hidden="true">◇</span><span><b>Бой с Хранителем</b><small>Корневой тотем · 1×1 · Mage 54</small></span><span aria-hidden="true">↗</span></button></div>
+   <button v-if="definition.victory.type === 'final-boss'" class="boss-practice-button" v-pad="() => emit('bossPractice')" @click="emit('bossPractice')"><span class="practice-sword" aria-hidden="true">⚔</span><span><b>Бой со Стражем</b><small>Тренировка · Mage 54 · Гнев Небес</small></span><span aria-hidden="true">↗</span></button>
+   <button v-if="definition.spawn.encounters" class="boss-practice-button guardian-practice-button" v-pad="() => emit('guardianPractice')" @click="emit('guardianPractice')"><span class="practice-sword" aria-hidden="true">◇</span><span><b>Бой с Хранителем</b><small>Корневой тотем · 1×1 · Mage 54</small></span><span aria-hidden="true">↗</span></button></div>
    <div class="menu-actions"><button class="text-button" v-pad="() => emit('help')" @click="emit('help')">Как играть</button><span>·</span><button class="text-button" v-pad="() => emit('settings')" @click="emit('settings')">Настройки</button></div>
    <button class="text-button records-link" v-pad="() => emit('records')" @click="emit('records')">Локальные рекорды ↗</button>
    <div class="menu-facts"><span><b>5</b> стихий магии</span><span><b>∞</b> бесконечный лес</span><span><b>1</b> последняя искра</span></div>

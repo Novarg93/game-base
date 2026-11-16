@@ -7,9 +7,10 @@ import { MOBILITY_SPECIALIZATIONS } from '../config/mobilityUpgrades';
 import { enrageAt, SURVIVAL_ENRAGE as E } from '../config/survivalEnrage';
 import {endgameAt,ENDGAME} from '../config/endgame';
 export { WAVES, type SpawnProfile } from '../config/pacing';
-export function profileAt(seconds: number):SpawnProfile {
-  if(seconds<ENDGAME.from)return [...WAVES].reverse().find(p => seconds >= p.from) ?? WAVES[0];
-  const t=Math.min(1,(seconds-ENDGAME.from)/600),p=WAVES.find(p=>p.from===840)!;
+export function profileAt(seconds: number, profiles: readonly SpawnProfile[] = WAVES):SpawnProfile {
+  if(seconds<ENDGAME.from)return [...profiles].reverse().find(p => seconds >= p.from) ?? profiles[0];
+  const t=Math.min(1,(seconds-ENDGAME.from)/600),p=profiles.find(p=>p.from===840) ?? profiles[profiles.length-1];
+  if (!['grunt','runner','tank','caster','rusher','splitter'].every(id => id in p.weights)) return p;
   return{...p,name:'Endgame Phase II',elite:Math.min(.4,.26+endgameAt(seconds).tick*.005),weights:{grunt:5-2*t,runner:24-4*t,tank:12-6*t,caster:25+6*t,rusher:22+8*t,splitter:12-2*t}};
 }
 export function pickEnemy(profile: SpawnProfile, rng: SeededRandom): RegularKind {
@@ -21,7 +22,7 @@ export function speedMultiplierAt(seconds: number, kind: RegularKind) {
   return legacySpeedMultiplierAt(Math.min(seconds,E.from),kind)*enrageSpeedAt(seconds,kind);
 }
 export function enrageSpeedAt(seconds:number,kind:RegularKind){return Math.min(kind==='runner'?E.runnerSpeedCap:kind==='rusher'?E.rusherSpeedCap:E.speedCap,enrageAt(Math.min(seconds,ENDGAME.from)).speed)*endgameAt(seconds).speed;}
-export function spawnCadenceAt(seconds:number){const p=profileAt(Math.min(seconds,E.from));return{interval:p.interval/enrageAt(seconds).spawn,burst:p.burst};}
+export function spawnCadenceAt(seconds:number, profiles: readonly SpawnProfile[] = WAVES){const p=profileAt(Math.min(seconds,E.from), profiles);return{interval:p.interval/enrageAt(seconds).spawn,burst:p.burst};}
 function legacySpeedMultiplierAt(seconds:number,kind:RegularKind) {
   const cap = kind === 'runner' ? S.runnerCap : kind === 'rusher' ? S.rusherCap : S.cap;
   const earlyCap = kind === 'runner' ? 1.25 : kind === 'rusher' ? 1.3 : 1.45;

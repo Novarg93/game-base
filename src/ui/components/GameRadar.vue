@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, shallowRef } from 'vue';
-import { radarFrames } from '../../game/events/bridge';
+import { useGameBridge } from '../gameBridge';
+const { radarFrames } = useGameBridge();
 import type { RadarFrame, RadarKind } from '../../game/radar/radar';
 import { RADAR_BALANCE } from '../../game/config/gameBalance';
 const frame = shallowRef<RadarFrame | null>(null);
